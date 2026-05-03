@@ -1,0 +1,249 @@
+:root {
+    --font-size: 1.5rem;
+
+    --color-page-background: #0b0c0c;
+    --color-text-primary: #f7f8f8;
+    --color-text-secondary: #b2b6bc;
+
+    --color-card-background: #161718;
+    --color-card-border: #37393d;
+    --color-card-focus: #b8c1cd;
+
+    --color-button: #28282c;
+    --color-button-hover: #323237;
+
+    --color-accent-a: #f0bf00;
+    --color-accent-b: #5e6ad2;
+    --color-accent-result: #23923c;
+
+    --color-accent-a-background: rgba(240, 191, 0, 0.3);
+    --color-accent-b-background: rgba(94, 106, 210, 0.4);
+    --color-accent-result-background: rgba(35, 146, 60, 0.5);
+}
+
+@media (min-width: 768px) {
+    :root {
+        --font-size: 2rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    :root {
+        --font-size: 1.5rem;
+    }
+}
+
+html {
+    font-size: 16px;
+}
+
+body {
+    font-family: ui-monospace, monospace;
+    background: var(--color-page-background);
+    color: var(--color-text-primary);
+    font-size: var(--font-size);
+}
+
+body #container {
+    position: relative;
+
+    display: grid;
+    grid-auto-rows: auto;
+    gap: 1rem;
+
+    min-width: 320px;
+    max-width: 1280px;
+    margin: auto;
+}
+
+body #container #title {
+    margin-left: 0.75rem;
+}
+
+/* Card */
+body #container .card {
+    background: var(--color-card-background);
+
+    padding: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid var(--color-card-border);
+
+    position: relative;
+    margin: 0.75rem;
+}
+
+body #container .card:after {
+    background: linear-gradient(
+        transparent,
+        var(--color-card-focus),
+        transparent
+    );
+    height: 70px;
+    width: 1px;
+    position: absolute;
+    left: -1px;
+    top: 65%;
+    opacity: 0;
+    content: "";
+    transition: top 600ms ease, opacity 600ms ease;
+}
+
+body #container .card:hover:after,
+body #container .card:focus-within:after {
+    top: 15%;
+    opacity: 1;
+}
+
+/* Inputs */
+body #container .card .inputs {
+    display: flex;
+}
+
+body #container .card .inputs input {
+    font-size: var(--font-size);
+    border-radius: 0.5rem;
+    outline: none;
+    color: var(--color-text-primary);
+    width: 42.5%;
+}
+
+body #container .card .inputs input.input-a:focus,
+body #container .card .inputs input.input-b:focus {
+    border: 2px solid var(--color-card-focus);
+}
+
+body #container .card .inputs input::placeholder {
+    color: var(--color-text-secondary);
+    opacity: 1;
+}
+
+body #container .card .inputs input.input-a {
+    border: 2px solid var(--color-accent-a);
+    background: var(--color-accent-a-background);
+}
+
+body #container .card .inputs input.input-b {
+    border: 2px solid var(--color-accent-b);
+    background: var(--color-accent-b-background);
+}
+
+/* Icon Button */
+body #container .icon-button {
+    background: var(--color-button);
+    width: 3rem;
+    height: 3rem;
+    margin: auto;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+body #container .icon-button:hover {
+    background: var(--color-button-hover);
+    cursor: pointer;
+}
+body #container .icon-button:active {
+    transform: scale(1.25);
+}
+
+/* Swap Button */
+body #container .card div.swap-button .icon {
+    width: 2rem;
+    height: auto;
+}
+
+/* Results */
+body #container .card .results {
+    margin: 2rem auto 0 auto;
+}
+
+body #container .card .results .result-row {
+    margin: 1.5rem auto 0.75rem auto;
+    display: flex;
+}
+
+body #container .card .results .result-row .result-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+body #container .card .results .result-row .result-column.gap-column {
+    flex: 0 0 8%;
+}
+
+body #container .card .results .result-row .result-column.value-a,
+body #container .card .results .result-row .result-column.value-b,
+body #container .card .results .result-row .result-column.result-value {
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    overflow-wrap: anywhere;
+
+    flex: 1;
+    min-width: 10%;
+    max-width: 26%;
+}
+
+body #container .card .results .result-row .result-column.value-a {
+    background: var(--color-accent-a-background);
+}
+body #container .card .results .result-row .result-column.value-b {
+    background: var(--color-accent-b-background);
+}
+body #container .card .results .result-row .result-column.result-value {
+    background: var(--color-accent-result-background);
+}
+
+/* Reveal Next Card Button */
+body #container #reveal-next-card-row #reveal-next-card-button {
+    width: 3.5rem;
+    height: 3.5rem;
+}
+
+body #container #reveal-next-card-row #reveal-next-card-button .icon {
+    width: 2.5rem;
+    height: auto;
+}
+
+/* Remove spin box on number input */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { /* Remove arrows in Chrome, Safari, Edge */
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] { /* Remove arrows in Firefox */
+    -moz-appearance: textfield;
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+    cursor: help;
+    border-bottom: 1px dotted var(--color-card-focus);
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: 125%;
+    transform: translateX(-10%);
+    background: var(--color-page-background);
+    color: var(--color-text-primary);
+    padding: 6px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.15s ease;
+    pointer-events: none;
+}
+
+.tooltip:hover::after {
+    opacity: 1;
+    visibility: visible;
+}

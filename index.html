@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Percentage Calculator</title>
+        <link rel="stylesheet" href="css/style.css">
+        <script src="js/calc.js" defer></script>
+        <script src="js/main.js" defer></script>
+    </head>
+
+    <body>
+        <div id="container">
+
+            <h1 id="title">Percentage Calculator</h1>
+
+            <div id="card-1" class="card">
+                <div class="inputs">
+                    <input id="card-1-a" class="input-a" name="card-1-a" type="number" inputmode="numeric" placeholder="Enter a number">
+
+                    <div id="card-1-swap-button" class="icon-button swap-button">
+                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M7 6 L3 9 L7 12 M3 9 H21 M17 12 L21 15 L17 18 M3 15 H21"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+
+                    <input id="card-1-b" class="input-b" name="card-1-b" type="number" inputmode="numeric" placeholder="Enter a number">
+                </div>
+
+                <div class="results">
+                    <div class="result-row percentage-result-row">
+                        <div id="card-1-percentage-value-a" class="value-a result-column">?</div>
+                        <div class="result-column">%</div>
+                        <div class="result-column gap-column">of</div>
+                        <div id="card-1-percentage-value-b" class="value-b result-column">?</div>
+                        <div class="result-column gap-column">is</div>
+                        <div id="card-1-percentage-result" class="result-value result-column">?</div>
+                    </div>
+
+                    <div class="result-row percent-result-row">
+                        <div id="card-1-percent-value-a" class="value-a result-column">?</div>
+                        <div class="result-column gap-column">is</div>
+                        <div id="card-1-percent-result" class="result-value result-column">?</div>
+                        <div class="result-column">%</div>
+                        <div class="result-column gap-column">of</div>
+                        <div id="card-1-percent-value-b" class="value-b result-column">?</div>
+                    </div>
+
+                    <div class="result-row delta-result-row">
+                        <div class="result-column">
+                            <span class="tooltip" data-tooltip="increase/decrease">&#916;</span>&nbsp;from&nbsp;
+                        </div>
+                        <div id="card-1-delta-value-a" class="value-a result-column">?</div>
+                        <div class="result-column gap-column">to</div>
+                        <div id="card-1-delta-value-b" class="value-b result-column">?</div>
+                        <div class="result-column gap-column">is</div>
+                        <div id="card-1-delta-result" class="result-value result-column">?</div>
+                        <div class="result-column">%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="card-2" class="card" hidden>
+                <div class="inputs">
+                    <input id="card-2-a" class="input-a" name="card-2-a" type="number" inputmode="numeric" placeholder="Enter a number">
+
+                    <div id="card-2-swap-button" class="icon-button swap-button">
+                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M7 6 L3 9 L7 12 M3 9 H21 M17 12 L21 15 L17 18 M3 15 H21"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+
+                    <input id="card-2-b" class="input-b" name="card-2-b" type="number" inputmode="numeric" placeholder="Enter a number">
+                </div>
+
+                <div class="results">
+                    <div class="result-row percentage-result-row">
+                        <div id="card-2-percentage-value-a" class="value-a result-column">?</div>
+                        <div class="result-column">%</div>
+                        <div class="result-column gap-column">of</div>
+                        <div id="card-2-percentage-value-b" class="value-b result-column">?</div>
+                        <div class="result-column gap-column">is</div>
+                        <div id="card-2-percentage-result" class="result-value result-column">?</div>
+                    </div>
+
+                    <div class="result-row percent-result-row">
+                        <div id="card-2-percent-value-a" class="value-a result-column">?</div>
+                        <div class="result-column gap-column">is</div>
+                        <div id="card-2-percent-result" class="result-value result-column">?</div>
+                        <div class="result-column">%</div>
+                        <div class="result-column gap-column">of</div>
+                        <div id="card-2-percent-value-b" class="value-b result-column">?</div>
+                    </div>
+
+                    <div class="result-row delta-result-row">
+                        <div class="result-column">
+                            <span class="tooltip" data-tooltip="increase/decrease">&#916;</span>&nbsp;from&nbsp;
+                        </div>
+                        <div id="card-2-delta-value-a" class="value-a result-column">?</div>
+                        <div class="result-column gap-column">to</div>
+                        <div id="card-2-delta-value-b" class="value-b result-column">?</div>
+                        <div class="result-column gap-column">is</div>
+                        <div id="card-2-delta-result" class="result-value result-column">?</div>
+                        <div class="result-column">%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="card-3" class="card" hidden>
+                <div class="inputs">
+                    <input id="card-3-a" class="input-a" name="card-3-a" type="number" inputmode="numeric" placeholder="Enter a number">
+
+                    <div id="card-3-swap-button" class="icon-button swap-button">
+                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M7 6 L3 9 L7 12 M3 9 H21 M17 12 L21 15 L17 18 M3 15 H21"
+                                  stroke="currentColor"
+                                  stroke-width="2"
+                                  stroke-linecap="round"
+                                  stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+
+                    <input id="card-3-b" class="input-b" name="card-3-b" type="number" inputmode="numeric" placeholder="Enter a number">
+                </div>
+
+                <div class="results">
+                    <div class="result-row percentage-result-row">
+                        <div id="card-3-percentage-value-a" class="value-a result-column">?</div>
+                        <div class="result-column">%</div>
+                        <div class="result-column gap-column">of</div>
+                        <div id="card-3-percentage-value-b" class="value-b result-column">?</div>
+                        <div class="result-column gap-column">is</div>
+                        <div id="card-3-percentage-result" class="result-value result-column">?</div>
+                    </div>
+
+                    <div class="result-row percent-result-row">
+                        <div id="card-3-percent-value-a" class="value-a result-column">?</div>
+                        <div class="result-column gap-column">is</div>
+                        <div id="card-3-percent-result" class="result-value result-column">?</div>
+                        <div class="result-column">%</div>
+                        <div class="result-column gap-column">of</div>
+                        <div id="card-3-percent-value-b" class="value-b result-column">?</div>
+                    </div>
+
+                    <div class="result-row delta-result-row">
+                        <div class="result-column">
+                            <span class="tooltip" data-tooltip="increase/decrease">&#916;</span>&nbsp;from&nbsp;
+                        </div>
+                        <div id="card-3-delta-value-a" class="value-a result-column">?</div>
+                        <div class="result-column gap-column">to</div>
+                        <div id="card-3-delta-value-b" class="value-b result-column">?</div>
+                        <div class="result-column gap-column">is</div>
+                        <div id="card-3-delta-result" class="result-value result-column">?</div>
+                        <div class="result-column">%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reveal-next-card-row" class="reveal-next-card-row">
+                <div id="reveal-next-card-button" class="icon-button reveal-next-card-button">
+                    <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 5 V19 M5 12 H19"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"/>
+                    </svg>
+                </div>
+            </div>
+
+        </div>
+    </body>
+</html>

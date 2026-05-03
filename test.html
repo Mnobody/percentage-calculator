@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>test</title>
+        <style>
+            body { background: black; color: white; }
+            span.status.passed { color: green; }
+            span.status.failed { color: red; }
+            span.description.failed { color: yellow; }
+        </style>
+        <script src="js/calc.js"></script>
+        <script>
+
+            function output(message, expected, actual) {
+                const passed = expected === actual;
+
+                const status = document.createElement('span');
+                status.classList.add('status', passed ? 'passed' : 'failed');
+                status.innerHTML = passed ? 'OK!' : 'Failed!';
+
+                const description = document.createElement('span');
+                description.classList.add('description')
+                description.innerHTML = ' | ' + message;
+
+                if (!passed) {
+                    const additionalDescription = document.createElement('span');
+                    additionalDescription.classList.add('description', 'failed');
+                    additionalDescription.innerHTML += ' Expected: ' + expected + ', Actual: ' + actual;
+                    description.appendChild(additionalDescription);
+                }
+
+                const listItem = document.createElement('li');
+                listItem.appendChild(status);
+                listItem.appendChild(description);
+
+                document.querySelector('#list').appendChild(listItem);
+            }
+
+            function testCalculate() {
+                const data = [
+                    {'a': 20,      'b': 100,       'expected': { 'percentage': 20,                   'percent': 20,                 'delta': 400 }},
+                    {'a': 1.3,     'b': 100,       'expected': { 'percentage': 1.3,                  'percent': 1.3,                'delta': 7592.307692307692 }},
+                    {'a': 13.35,   'b': 100,       'expected': { 'percentage': 13.350000000000001,   'percent': 13.350000000000001, 'delta': 649.0636704119851 }},
+                    {'a': 13.354,  'b': 100,       'expected': { 'percentage': 13.354,               'percent': 13.354,             'delta': 648.8392990864161 }},
+                    {'a': 13.3546, 'b': 100,       'expected': { 'percentage': 13.3546,              'percent': 13.3546,            'delta': 648.8056549803064 }},
+                    {'a': 13.35,   'b': 300,       'expected': { 'percentage': 40.050000000000004,   'percent': 4.45,               'delta': 2147.1910112359546 }},
+                    {'a': 10,      'b': 200,       'expected': { 'percentage': 20,                   'percent': 5,                  'delta': 1900 }},
+                    {'a': 1000,    'b': 200,       'expected': { 'percentage': 2000,                 'percent': 500,                'delta': -80 }},
+                    {'a': 10,      'b': 50,        'expected': { 'percentage': 5,                    'percent': 20,                 'delta': 400 }},
+                    {'a': 13,      'b': 100,       'expected': { 'percentage': 13,                   'percent': 13,                 'delta': 669.2307692307693 }},
+                    {'a': 2.5674,  'b': 1,         'expected': { 'percentage': 0.025674000000000002, 'percent': 256.7400,           'delta': -61.05008958479395 }},
+                    {'a': 2.5674,  'b': 10,        'expected': { 'percentage': 0.25674,              'percent': 25.674000000000003, 'delta': 289.49910415206045 }},
+                    {'a': 2.5674,  'b': 100.45678, 'expected': { 'percentage': 2.57912736972,        'percent': 2.5557259549828295, 'delta': 3812.782581600062 }},
+                    {'a': 2,       'b': -100,      'expected': { 'percentage': -2,                   'percent': -2,                 'delta': -5100 }},
+                    {'a': -2,      'b': 100,       'expected': { 'percentage': -2,                   'percent': -2,                 'delta': -5100 }},
+                    {'a': -2,      'b': -100,      'expected': { 'percentage': 2,                    'percent': 2,                  'delta': 4900 }},
+                    {'a': 1,       'b': 2,         'expected': { 'percentage': 0.02,                 'percent': 50,                 'delta': 100 }},
+                    {'a': 2,       'b': 1,         'expected': { 'percentage': 0.02,                 'percent': 200,                'delta': -50 }},
+                    {'a': 0.1,     'b': 2,         'expected': { 'percentage': 0.002,                'percent': 5,                  'delta': 1899.9999999999995 }},
+                    {'a': 0,       'b': 2,         'expected': { 'percentage': 0,                    'percent': 0,                  'delta': Infinity }},
+                    {'a': 1,       'b': 1,         'expected': { 'percentage': 0.01,                 'percent': 100,                'delta': 0 }},
+                    {'a': 5847,    'b': 251803,    'expected': { 'percentage': 14722921.41,          'percent': 2.3220533512309225, 'delta': 4206.533264922182 }},
+                    {'a': -45,     'b': 45,        'expected': { 'percentage': -20.25,               'percent': -100,               'delta': -200 }},
+                ];
+
+                data.forEach(item => {
+                    const actual = calculate(item.a, item.b);
+
+                    output(
+                        item.a + '% of ' + item.b + ' equals to ' + item.expected.percentage + '.',
+                        item.expected.percentage,
+                        actual.percentage
+                    );
+                    output(
+                        item.a + ' is ' + item.expected.percent + '% of ' + item.b + '.',
+                        item.expected.percent,
+                        actual.percent
+                    );
+                    output(
+                        'increase/decrease from ' + item.a + ' to ' + item.b + ' is ' + item.expected.delta + '%.',
+                        item.expected.delta,
+                        actual.delta
+                    );
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                testCalculate();
+            });
+
+        </script>
+    </head>
+
+    <body>
+        <h3> tests: </h3>
+        <ul id="list"></ul>
+    </body>
+</html>
