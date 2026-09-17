@@ -10,171 +10,109 @@
     </head>
 
     <body>
-        <div id="container">
+        <main class="page">
 
-            <h1 id="title">Percentage Calculator</h1>
+            <header class="page-header">
+                <h1 class="title">Percentage Calculator</h1>
+                <p class="lede">Enter two numbers. All three relations update as you type.</p>
+            </header>
 
-            <div id="card-1" class="card">
-                <div class="inputs">
-                    <input id="card-1-a" class="input-a" name="card-1-a" type="number" inputmode="numeric" placeholder="Enter a number">
-
-                    <div id="card-1-swap-button" class="icon-button swap-button">
-                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M7 6 L3 9 L7 12 M3 9 H21 M17 12 L21 15 L17 18 M3 15 H21"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-
-                    <input id="card-1-b" class="input-b" name="card-1-b" type="number" inputmode="numeric" placeholder="Enter a number">
-                </div>
-
-                <div class="results">
-                    <div class="result-row percentage-result-row">
-                        <div id="card-1-percentage-value-a" class="value-a result-column">?</div>
-                        <div class="result-column">%</div>
-                        <div class="result-column gap-column">of</div>
-                        <div id="card-1-percentage-value-b" class="value-b result-column">?</div>
-                        <div class="result-column gap-column">is</div>
-                        <div id="card-1-percentage-result" class="result-value result-column">?</div>
-                    </div>
-
-                    <div class="result-row percent-result-row">
-                        <div id="card-1-percent-value-a" class="value-a result-column">?</div>
-                        <div class="result-column gap-column">is</div>
-                        <div id="card-1-percent-result" class="result-value result-column">?</div>
-                        <div class="result-column">%</div>
-                        <div class="result-column gap-column">of</div>
-                        <div id="card-1-percent-value-b" class="value-b result-column">?</div>
-                    </div>
-
-                    <div class="result-row delta-result-row">
-                        <div class="result-column">
-                            <span class="tooltip" data-tooltip="increase/decrease">&#916;</span>&nbsp;from&nbsp;
+            <div id="cards" class="cards">
+                <!-- The first card doubles as the template for every card added later. -->
+                <section id="card-1" class="card">
+                    <div class="inputs">
+                        <div class="field field-a">
+                            <input id="card-1-a" class="input-a" type="number" step="any" inputmode="decimal" placeholder="Enter a number" aria-label="First value">
                         </div>
-                        <div id="card-1-delta-value-a" class="value-a result-column">?</div>
-                        <div class="result-column gap-column">to</div>
-                        <div id="card-1-delta-value-b" class="value-b result-column">?</div>
-                        <div class="result-column gap-column">is</div>
-                        <div id="card-1-delta-result" class="result-value result-column">?</div>
-                        <div class="result-column">%</div>
-                    </div>
-                </div>
-            </div>
 
-            <div id="card-2" class="card" hidden>
-                <div class="inputs">
-                    <input id="card-2-a" class="input-a" name="card-2-a" type="number" inputmode="numeric" placeholder="Enter a number">
+                        <button type="button" class="icon-button swap-button" aria-label="Swap values">
+                            <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M7 6 L3 9 L7 12 M3 9 H21 M17 12 L21 15 L17 18 M3 15 H21"
+                                    stroke="currentColor"
+                                    stroke-width="2"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"/>
+                            </svg>
+                        </button>
 
-                    <div id="card-2-swap-button" class="icon-button swap-button">
-                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M7 6 L3 9 L7 12 M3 9 H21 M17 12 L21 15 L17 18 M3 15 H21"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
-                    </div>
-
-                    <input id="card-2-b" class="input-b" name="card-2-b" type="number" inputmode="numeric" placeholder="Enter a number">
-                </div>
-
-                <div class="results">
-                    <div class="result-row percentage-result-row">
-                        <div id="card-2-percentage-value-a" class="value-a result-column">?</div>
-                        <div class="result-column">%</div>
-                        <div class="result-column gap-column">of</div>
-                        <div id="card-2-percentage-value-b" class="value-b result-column">?</div>
-                        <div class="result-column gap-column">is</div>
-                        <div id="card-2-percentage-result" class="result-value result-column">?</div>
-                    </div>
-
-                    <div class="result-row percent-result-row">
-                        <div id="card-2-percent-value-a" class="value-a result-column">?</div>
-                        <div class="result-column gap-column">is</div>
-                        <div id="card-2-percent-result" class="result-value result-column">?</div>
-                        <div class="result-column">%</div>
-                        <div class="result-column gap-column">of</div>
-                        <div id="card-2-percent-value-b" class="value-b result-column">?</div>
-                    </div>
-
-                    <div class="result-row delta-result-row">
-                        <div class="result-column">
-                            <span class="tooltip" data-tooltip="increase/decrease">&#916;</span>&nbsp;from&nbsp;
+                        <div class="field field-b">
+                            <input id="card-1-b" class="input-b" type="number" step="any" inputmode="decimal" placeholder="Enter a number" aria-label="Second value">
                         </div>
-                        <div id="card-2-delta-value-a" class="value-a result-column">?</div>
-                        <div class="result-column gap-column">to</div>
-                        <div id="card-2-delta-value-b" class="value-b result-column">?</div>
-                        <div class="result-column gap-column">is</div>
-                        <div id="card-2-delta-result" class="result-value result-column">?</div>
-                        <div class="result-column">%</div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="card-3" class="card" hidden>
-                <div class="inputs">
-                    <input id="card-3-a" class="input-a" name="card-3-a" type="number" inputmode="numeric" placeholder="Enter a number">
-
-                    <div id="card-3-swap-button" class="icon-button swap-button">
-                        <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                            <path d="M7 6 L3 9 L7 12 M3 9 H21 M17 12 L21 15 L17 18 M3 15 H21"
-                                  stroke="currentColor"
-                                  stroke-width="2"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"/>
-                        </svg>
                     </div>
 
-                    <input id="card-3-b" class="input-b" name="card-3-b" type="number" inputmode="numeric" placeholder="Enter a number">
-                </div>
-
-                <div class="results">
-                    <div class="result-row percentage-result-row">
-                        <div id="card-3-percentage-value-a" class="value-a result-column">?</div>
-                        <div class="result-column">%</div>
-                        <div class="result-column gap-column">of</div>
-                        <div id="card-3-percentage-value-b" class="value-b result-column">?</div>
-                        <div class="result-column gap-column">is</div>
-                        <div id="card-3-percentage-result" class="result-value result-column">?</div>
-                    </div>
-
-                    <div class="result-row percent-result-row">
-                        <div id="card-3-percent-value-a" class="value-a result-column">?</div>
-                        <div class="result-column gap-column">is</div>
-                        <div id="card-3-percent-result" class="result-value result-column">?</div>
-                        <div class="result-column">%</div>
-                        <div class="result-column gap-column">of</div>
-                        <div id="card-3-percent-value-b" class="value-b result-column">?</div>
-                    </div>
-
-                    <div class="result-row delta-result-row">
-                        <div class="result-column">
-                            <span class="tooltip" data-tooltip="increase/decrease">&#916;</span>&nbsp;from&nbsp;
+                    <!-- One shared grid: caption, then tile / operator / tile / operator / tile -->
+                    <div class="results">
+                        <div class="equation">
+                            <span class="caption">Percentage of a number</span>
+                            <span class="cell value-a has-unit"><span class="value">?</span></span>
+                            <span class="operator">of</span>
+                            <span class="cell value-b"><span class="value">?</span></span>
+                            <span class="operator">is</span>
+                            <span class="cell result percentage-result"><span class="value">?</span></span>
                         </div>
-                        <div id="card-3-delta-value-a" class="value-a result-column">?</div>
-                        <div class="result-column gap-column">to</div>
-                        <div id="card-3-delta-value-b" class="value-b result-column">?</div>
-                        <div class="result-column gap-column">is</div>
-                        <div id="card-3-delta-result" class="result-value result-column">?</div>
-                        <div class="result-column">%</div>
+
+                        <div class="equation">
+                            <span class="caption">What percent</span>
+                            <span class="cell value-a"><span class="value">?</span></span>
+                            <span class="operator">is</span>
+                            <span class="cell result percent-result has-unit"><span class="value">?</span></span>
+                            <span class="operator">of</span>
+                            <span class="cell value-b"><span class="value">?</span></span>
+                        </div>
+
+                        <div class="equation">
+                            <span class="caption">Change</span>
+                            <span class="cell value-a"><span class="value">?</span></span>
+                            <span class="operator" role="img" aria-label="to">&rarr;</span>
+                            <span class="cell value-b"><span class="value">?</span></span>
+                            <span class="operator">is</span>
+                            <span class="cell result delta-result has-unit"><span class="value">?</span></span>
+                        </div>
                     </div>
-                </div>
+                </section>
             </div>
 
-            <div id="reveal-next-card-row" class="reveal-next-card-row">
-                <div id="reveal-next-card-button" class="icon-button reveal-next-card-button">
-                    <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                        <path d="M12 5 V19 M5 12 H19"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"/>
-                    </svg>
-                </div>
-            </div>
+            <button id="add-card-button" type="button" class="add-card-button">
+                <svg class="icon" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M12 5 V19 M5 12 H19"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"/>
+                </svg>
+                Add another calculator
+            </button>
 
-        </div>
+            <section class="about">
+                <h2 class="about-title">About this calculator</h2>
+                <p>
+                    A quick tool for the three everyday percentage questions. Enter two numbers and all three results are calculated at once.
+                </p>
+
+                <h2 class="about-title">What each row answers</h2>
+                <dl class="about-list">
+                    <dt>Percentage of a number</dt>
+                    <dd>What is <span class="marker">&#x25CB;</span> percent of <span class="marker">&#x25CF;</span>? For example, 20% of 150 is 30.</dd>
+
+                    <dt>What percent</dt>
+                    <dd>What percentage of <span class="marker">&#x25CF;</span> is <span class="marker">&#x25CB;</span>? For example, 30 is 20% of 150.</dd>
+
+                    <dt>Change</dt>
+                    <dd>By what percentage does <span class="marker">&#x25CB;</span> change to reach <span class="marker">&#x25CF;</span>? From 150 to 180 is 20%, from 180 to 150 is about -16.67%. A negative value is a decrease.</dd>
+                </dl>
+
+                <h2 class="about-title">How to use it</h2>
+                <ol>
+                    <li>Enter your two numbers in the <span class="marker">&#x25CB;</span> and <span class="marker">&#x25CF;</span> fields. Decimals and negative values are fine.</li>
+                    <li>Read the results below. Each row repeats your numbers and highlights the computed value in green.</li>
+                    <li>Use the swap button to exchange the two numbers when the roles are the other way round.</li>
+                    <li>Add up to three calculators to compare different pairs side by side.</li>
+                </ol>
+
+                <p class="about-note">
+                    Results are shown in full, without rounding. Everything runs in your browser and nothing is sent anywhere.
+                </p>
+            </section>
+
+        </main>
     </body>
 </html>

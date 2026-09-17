@@ -1,23 +1,42 @@
 :root {
-    --color-page-background: #080808;
-    --color-text-primary: #e1e1e1;
-    --color-text-secondary: #949494;
+    --plane: #0d0d0d;                        /* page background */
+    --surface: #1a1a19;                      /* card background */
+    --ink: #ffffff;                          /* primary text */
+    --ink-1: #d2d1c9;                        /* lede: between primary and secondary */
+    --ink-2: #c3c2b7;                        /* secondary text */
+    --muted: #898781;                        /* labels, operators, placeholders */
+    --grid: #2c2c2a;                         /* subtle borders: cards, tiles */
+    --axis: #383835;                         /* buttons */
+    --edge: #55554f;                         /* input borders, clearly lighter than the card */
+    --ring: rgba(255, 255, 255, 0.10);       /* focus halo */
 
-    --color-card-background: #161616;
-    --color-card-border: #323437;
-    --color-card-focus: #949494;
+    /* The result is the only accent; inputs stay neutral and are told apart by index markers */
+    --result: #2fbf86;                       /* green: calculated values */
+    --result-wash: rgba(47, 191, 134, 0.10);
+    --result-border: rgba(47, 191, 134, 0.35);
+    --warning: #e0555c;                      /* red: division by zero etc. */
+    --warning-wash: rgba(224, 85, 92, 0.10);
+    --warning-border: rgba(224, 85, 92, 0.40);
 
-    --color-button: #323437;
-    --color-button-hover: #48494c;
+    /* 8px spacing rhythm */
+    --space-1: 0.5rem;
+    --space-2: 1rem;
+    --space-3: 1.5rem;
+    --space-4: 2rem;
+    --space-5: 2.5rem;
 
-    --color-accent-a: #facc15;
-    --color-accent-b: #60a5fa;
-    --color-accent-result: #4ade80;
+    --field-height: 4rem;                    /* editable inputs */
+    --cell-height: 3.5rem;                   /* equation cells */
+    --button-size: 3rem;
+    --radius: 6px;
+    --radius-lg: 8px;
+    --transition: 150ms ease;
 
-    /* Mobile-first type scale — clamp() lets each value grow with the viewport */
-    --font-size: clamp(1rem, 0.9rem + 0.5vw, 1.5rem);
-    --font-size-results: clamp(0.8rem, 0.55rem + 1.25vw, 1.5rem);
-    --font-size-title: clamp(1.5rem, 1.25rem + 1vw, 2.25rem);
+    --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    --font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+    --font-size-results: clamp(0.8rem, 0.6rem + 1vw, 1.125rem);
+    --font-size-small: 0.75rem;
+    --font-size-title: clamp(1.5rem, 1.25rem + 1vw, 2rem);
 }
 
 *,
@@ -26,57 +45,75 @@
     box-sizing: border-box;
 }
 
-html {
-    font-size: 100%;
-}
-
 body {
     margin: 0;
-    font-family: ui-monospace, monospace;
-    background: var(--color-page-background);
-    color: var(--color-text-primary);
+    font-family: var(--font-mono), monospace;
     font-size: var(--font-size);
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--plane);
+    -webkit-font-smoothing: antialiased;
 }
 
-/* Container */
-#container {
-    position: relative;
-    display: grid;
-    grid-auto-rows: auto;
-    gap: 1.25rem;
-    max-width: 80rem;
+/* Page */
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    max-width: 64rem;
     margin-inline: auto;
-    padding: 0.75rem;
+    padding: var(--space-3) var(--space-2) var(--space-4);
 }
 
-#title {
-    margin: 1rem 0;
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.title {
+    margin: 0;
     font-size: var(--font-size-title);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
 }
 
-/* Card */
+.lede {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--ink-1);
+}
+
+/* Cards */
+.cards {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
 .card {
     position: relative;
-    max-width: 100%;
-    padding: 0.875rem;
-    background: var(--color-card-background);
-    border: 1px solid var(--color-card-border);
-    border-radius: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);              /* inputs sit clearly apart from the results block */
+    padding: var(--space-2);
+    background: var(--surface);
+    border: 1px solid var(--grid);
+    border-radius: var(--radius-lg);
 }
 
+/* A light streak on the left edge slides up and fades in while the card is hovered or in use */
 .card::after {
     content: "";
     position: absolute;
     left: -1px;
     top: 65%;
     width: 1px;
-    height: 70px;
-    background: linear-gradient(
-        transparent,
-        var(--color-card-focus),
-        transparent
-    );
+    height: 8rem;
+    background: linear-gradient(transparent, var(--ink-2), transparent);
     opacity: 0;
+    pointer-events: none;
     transition: top 600ms ease, opacity 600ms ease;
 }
 
@@ -87,137 +124,46 @@ body {
 }
 
 /* Inputs */
-.card .inputs {
-    display: flex;
-    align-items: stretch;
-    gap: 0.25rem;
+.inputs {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: var(--space-1);
+    align-items: center;
 }
 
-.card .inputs input {
-    flex: 1 1 0;
-    width: 0;
+.field {
+    position: relative;
     min-width: 0;
-    padding: 0.75rem 0.25rem 0.75rem 0.5rem;
-    font-family: inherit;
-    font-size: var(--font-size);
-    color: var(--color-text-primary);
-    background: transparent;
-    border: 1px solid var(--color-card-border);
-    border-radius: 0.5rem;
+}
+
+.inputs input {
+    width: 100%;
+    height: var(--field-height);
+    padding: 0 var(--space-2);
+    font: inherit;
+    color: var(--ink);
+    caret-color: var(--ink);
+    background: var(--plane);
+    border: 1px solid var(--edge);
+    border-radius: var(--radius);
     outline: none;
+    text-overflow: ellipsis;   /* also truncates the placeholder cleanly when it does not fit */
+    transition: border-color var(--transition), box-shadow var(--transition);
 }
 
-.card .inputs input:focus {
-    border-color: var(--color-card-focus);
-}
-
-.card .inputs input::placeholder {
-    color: var(--color-text-secondary);
+.inputs input::placeholder {
+    font-size: 0.75rem;
+    color: var(--muted);
     opacity: 1;
 }
 
-.card .inputs input.input-a {
-    box-shadow: inset 4px 0 0 0 var(--color-accent-a);
+.inputs input:hover {
+    border-color: var(--muted);
 }
 
-.card .inputs input.input-b {
-    box-shadow: inset 4px 0 0 0 var(--color-accent-b);
-}
-
-/* Icon Button */
-.icon-button {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 3rem;
-    height: 3rem;
-    margin: auto;
-    padding: 0.5rem;
-    background: var(--color-button);
-    border-radius: 50%;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    transition: background 0.15s ease, transform 0.1s ease;
-}
-
-.icon-button:hover {
-    background: var(--color-button-hover);
-    cursor: pointer;
-}
-
-.icon-button:active {
-    transform: scale(0.9);
-}
-
-/* Swap Button */
-.card .swap-button .icon {
-    width: 1.5rem;
-    height: auto;
-}
-
-/* Results */
-.card .results {
-    margin-top: 0.875rem;
-    font-size: var(--font-size-results);
-}
-
-.card .results .result-row {
-    display: flex;
-    align-items: stretch;
-    /*margin: 0.5rem 0;*/
-    margin: 1.5rem 0 0.75rem 0;
-}
-
-.card .results .result-row .result-column {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-.card .results .result-row .result-column.gap-column {
-    flex: 0 0 auto;
-    padding-inline: 0.25em;
-}
-
-.card .results .result-row .result-column.value-a,
-.card .results .result-row .result-column.value-b,
-.card .results .result-row .result-column.result-value {
-    flex: 1 1 0;
-    min-width: 0;
-    padding: 1rem 0.5rem 1rem 0.75rem;
-    border: 1px solid var(--color-card-border);
-    border-radius: 0.5rem;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-}
-
-.card .results .result-row .result-column.value-a {
-    box-shadow: inset 2px 0 0 0 var(--color-accent-a);
-}
-
-.card .results .result-row .result-column.value-b {
-    box-shadow: inset 2px 0 0 0 var(--color-accent-b);
-}
-
-.card .results .result-row .result-column.result-value {
-    box-shadow: inset 0 -2px 0 0 var(--color-accent-result);
-}
-
-/* Reveal Next Card Button */
-#reveal-next-card-row {
-    padding: 0.25rem 0 1rem;
-}
-
-#reveal-next-card-row #reveal-next-card-button {
-    width: 3rem;
-    height: 3rem;
-}
-
-#reveal-next-card-row #reveal-next-card-button .icon {
-    width: 1.75rem;
-    height: auto;
+.inputs input:focus {
+    border-color: var(--ink-2);
+    box-shadow: 0 0 0 3px var(--ring);
 }
 
 /* Remove number-input spin buttons */
@@ -226,169 +172,254 @@ input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
+
 input[type="number"] {
     -moz-appearance: textfield;
+    appearance: textfield;
 }
 
-/* Tooltip */
-.tooltip {
-    position: relative;
-    cursor: help;
-    border-bottom: 1px dotted var(--color-card-focus);
+/* Buttons */
+button {
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.tooltip::after {
-    content: attr(data-tooltip);
-    position: absolute;
-    left: 650%;
-    bottom: 125%;
-    transform: translateX(-50%);
-    padding: 6px 8px;
-    background: var(--color-page-background);
-    color: var(--color-text-primary);
-    border: 1px solid var(--color-card-border);
-    border-radius: 4px;
+button:focus-visible {
+    outline: 2px solid var(--ink-2);
+    outline-offset: 2px;
+}
+
+.icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--button-size);
+    height: var(--button-size);
+    padding: 0;
+    color: var(--ink-2);
+    background: transparent;
+    border: 1px solid var(--axis);
+    border-radius: 50%;
+    transition: color var(--transition), background var(--transition), border-color var(--transition), transform 100ms ease;
+}
+
+.icon-button:hover {
+    color: var(--ink);
+    background: var(--grid);
+    border-color: var(--muted);
+}
+
+.icon-button:active {
+    transform: scale(0.94);
+}
+
+.icon-button .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.add-card-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    height: var(--button-size);
+    padding: 0 var(--space-2);
+    font-size: 0.875rem;
+    color: var(--muted);
+    background: transparent;
+    border: 1px dashed var(--axis);
+    border-radius: var(--radius-lg);
+    transition: color var(--transition), border-color var(--transition), background var(--transition);
+}
+
+.add-card-button:hover {
+    color: var(--ink);
+    background: var(--surface);
+    border-color: var(--muted);
+}
+
+.add-card-button .icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.results {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: var(--space-1);
+    font-size: var(--font-size-results);
+}
+
+.equation {
+    display: contents;
+}
+
+.caption {
+    grid-column: 1 / -1;
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+}
+
+.equation + .equation .caption {
+    padding-top: var(--space-1);      /* rows stay tight so the three read as one group */
+}
+
+.operator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--cell-height);
+    font-size: 0.8em;
+    line-height: 1.25;
+    color: var(--ink-2);
     white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
+}
+
+/* Tiles: same dark block for every value, text takes the role's tone */
+.cell {
+    --tone: var(--ink);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: var(--cell-height);
+    padding: var(--space-2) var(--space-1);
+    line-height: 1.25;
+    text-align: center;
+    color: var(--tone);
+    background: var(--plane);
+    border: 1px solid var(--grid);
+    border-radius: var(--radius);
+    overflow-wrap: anywhere;
+    font-variant-numeric: tabular-nums;
+    transition: color var(--transition), background var(--transition), border-color var(--transition);
+}
+
+/* Index markers: a hollow / filled circle in the corner ties each input to its echoed tiles */
+.field::before,
+.cell::before {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.5rem;
+    font-size: var(--font-size-small);
+    line-height: 1;
+    color: var(--muted);
     pointer-events: none;
-    z-index: 1;
-    transition: opacity 0.15s ease;
 }
 
-.tooltip:hover::after,
-.tooltip:focus::after {
-    opacity: 1;
-    visibility: visible;
+.field-a::before,
+.cell.value-a::before {
+    content: "\25CB";  /* ○ */
 }
 
-/* ===== Large phones / small tablets (≥ 480px) ===== */
-@media (min-width: 30rem) {
-    #container {
-        gap: 1.5rem;
-        padding: 1rem;
-    }
-
-    .card {
-        padding: 1.125rem;
-    }
-
-    .card .inputs {
-        gap: 0.75rem;
-    }
-
-    .card .inputs input {
-        padding: 1.125rem 0.75rem 1.125rem 1rem;
-    }
-
-    .icon-button {
-        width: 3.5rem;
-        height: 3.5rem;
-    }
-
-    .card .swap-button {
-        margin-inline: 0.5rem;
-    }
-
-    .card .swap-button .icon {
-        width: 1.75rem;
-    }
-
-    .card .results {
-        margin-top: 1.5rem;
-    }
-
-    .card .results .result-row {
-        margin: 1rem 0 0.5rem 0;
-    }
-
-    .card .results .result-row .result-column.gap-column {
-        padding-inline: 0.35em;
-    }
-
-    .card .results .result-row .result-column.value-a,
-    .card .results .result-row .result-column.value-b,
-    .card .results .result-row .result-column.result-value {
-        padding: 0.875rem 0.5rem 0.875rem 0.75rem;
-    }
-
-    #reveal-next-card-row {
-        padding: 0.5rem 0 1.5rem;
-    }
-
-    #reveal-next-card-row #reveal-next-card-button {
-        width: 3.5rem;
-        height: 3.5rem;
-    }
-
-    #reveal-next-card-row #reveal-next-card-button .icon {
-        width: 2rem;
-    }
+.field-b::before,
+.cell.value-b::before {
+    content: "\25CF";  /* ● */
 }
 
-/* ===== Tablet (≥ 640px) ===== */
+/* Unit inside the tile, e.g. "4.45 %", glued to the number so it wraps with it */
+.cell.has-unit .value::after {
+    content: "\a0%";
+    font-size: 0.8em;
+    opacity: 0.8;
+}
+
+.cell.is-empty .value::after {
+    content: none;
+}
+
+/* Calculated values: green text, tinted wash and border so they read as computed */
+.cell.result {
+    --tone: var(--result);
+    background: var(--result-wash);
+    border-color: var(--result-border);
+}
+
+/* Special cases such as division by zero */
+.cell.is-warning {
+    --tone: var(--warning);
+    background: var(--warning-wash);
+    border-color: var(--warning-border);
+}
+
+/* About section */
+.about {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    max-width: 38rem;                 /* half the page on wide screens, full width on phones */
+    margin-top: var(--space-3);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+}
+
+.about-title {
+    margin: var(--space-2) 0 0;
+    font-size: var(--font-size-small);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-1);
+}
+
+.about p,
+.about ol,
+.about dl,
+.about dd {
+    margin: 0;
+}
+
+.about ol {
+    padding-left: 1.5em;
+}
+
+.about li + li {
+    margin-top: 0.25em;
+}
+
+.about dt {
+    color: var(--ink);
+}
+
+.about dd + dt {
+    margin-top: var(--space-1);
+}
+
+.about .marker {
+    color: var(--muted);
+}
+
+.about-note {
+    color: var(--muted);
+}
+
+/* ===== Tablet and up (>= 640px) ===== */
 @media (min-width: 40rem) {
+    .page {
+        padding: var(--space-4) var(--space-3);
+    }
+
     .card {
-        padding: 1.5rem;
+        padding: var(--space-3);
     }
 
-    .card .inputs input {
-        padding: 1.25rem 0.75rem 1.25rem 1rem;
+    .inputs {
+        gap: var(--space-2);
     }
 
-    .icon-button {
-        width: 4rem;
-        height: 4rem;
+    .results {
+        gap: var(--space-2);
     }
 
-    .card .swap-button {
-        margin-inline: 1rem;
-    }
-
-    .card .swap-button .icon {
-        width: 2rem;
-    }
-
-    .card .results {
-        margin-top: 1.75rem;
-    }
-
-    .card .results .result-row {
-        margin: 1.25rem 0 0.625rem 0;
-    }
-
-    .card .results .result-row .result-column.gap-column {
-        padding-inline: 0.4em;
-    }
-
-    .card .results .result-row .result-column.value-a,
-    .card .results .result-row .result-column.value-b,
-    .card .results .result-row .result-column.result-value {
-        padding: 1rem 0.5rem 1rem 0.75rem;
-    }
-
-    #reveal-next-card-row #reveal-next-card-button {
-        width: 4.5rem;
-        height: 4.5rem;
-    }
-
-    #reveal-next-card-row #reveal-next-card-button .icon {
-        width: 2.5rem;
-    }
-}
-
-/* ===== Desktop (≥ 1024px) ===== */
-@media (min-width: 64rem) {
-    #container {
-        gap: 2rem;
-        padding: 1rem;
-    }
-
-    .card .results {
-        margin-top: 2rem;
-    }
-
-    .card .results .result-row {
-        margin: 1.5rem 0 0.75rem 0;
+    .cell {
+        padding: var(--space-2);
     }
 }

@@ -1,106 +1,80 @@
 "use strict";
 
-const cards = {
-    card1: {
-        inputA: document.querySelector('#card-1-a'),
-        inputB: document.querySelector('#card-1-b'),
-        swapButton: document.querySelector('#card-1-swap-button'),
+const cardsContainer = document.querySelector('#cards');
+const addCardButton = document.querySelector('#add-card-button');
+const templateCard = document.querySelector('#card-1');
 
-        percentageA: document.querySelector('#card-1-percentage-value-a'),
-        percentageB: document.querySelector('#card-1-percentage-value-b'),
-        percentageResult: document.querySelector('#card-1-percentage-result'),
-
-        percentA: document.querySelector('#card-1-percent-value-a'),
-        percentB: document.querySelector('#card-1-percent-value-b'),
-        percentResult: document.querySelector('#card-1-percent-result'),
-
-        deltaA: document.querySelector('#card-1-delta-value-a'),
-        deltaB: document.querySelector('#card-1-delta-value-b'),
-        deltaResult: document.querySelector('#card-1-delta-result'),
-    },
-    card2: {
-        inputA: document.querySelector('#card-2-a'),
-        inputB: document.querySelector('#card-2-b'),
-        swapButton: document.querySelector('#card-2-swap-button'),
-
-        percentageA: document.querySelector('#card-2-percentage-value-a'),
-        percentageB: document.querySelector('#card-2-percentage-value-b'),
-        percentageResult: document.querySelector('#card-2-percentage-result'),
-
-        percentA: document.querySelector('#card-2-percent-value-a'),
-        percentB: document.querySelector('#card-2-percent-value-b'),
-        percentResult: document.querySelector('#card-2-percent-result'),
-
-        deltaA: document.querySelector('#card-2-delta-value-a'),
-        deltaB: document.querySelector('#card-2-delta-value-b'),
-        deltaResult: document.querySelector('#card-2-delta-result'),
-    },
-    card3: {
-        inputA: document.querySelector('#card-3-a'),
-        inputB: document.querySelector('#card-3-b'),
-        swapButton: document.querySelector('#card-3-swap-button'),
-
-        percentageA: document.querySelector('#card-3-percentage-value-a'),
-        percentageB: document.querySelector('#card-3-percentage-value-b'),
-        percentageResult: document.querySelector('#card-3-percentage-result'),
-
-        percentA: document.querySelector('#card-3-percent-value-a'),
-        percentB: document.querySelector('#card-3-percent-value-b'),
-        percentResult: document.querySelector('#card-3-percent-result'),
-
-        deltaA: document.querySelector('#card-3-delta-value-a'),
-        deltaB: document.querySelector('#card-3-delta-value-b'),
-        deltaResult: document.querySelector('#card-3-delta-result'),
-    },
-};
-
-const setHtmlContent = function(card, result) {
-    [card.percentageA, card.percentA, card.deltaA].forEach(el => el.textContent = result.a);
-    [card.percentageB, card.percentB, card.deltaB].forEach(el => el.textContent = result.b)
-
-    card.percentageResult.textContent = result.percentage;
-    card.percentResult.textContent = result.percent;
-    card.deltaResult.textContent = result.delta;
-}
-
-const resetHtmlContent = function(card) {
-    [
-        card.percentageA, card.percentageB, card.percentageResult,
-        card.percentA, card.percentB, card.percentResult,
-        card.deltaA, card.deltaB, card.deltaResult
-    ].forEach(el => el.textContent = '?');
-}
+const MAX_CARDS = 3;
+let cardCount = 1;
 
 const isValidNumber = function(value) {
     return value !== "" && !Number.isNaN(+value);
-}
+};
 
-const handleInputChange = function(card) {
-    if (isValidNumber(card.inputA.value) && isValidNumber(card.inputB.value)) {
-        setHtmlContent(card, calculate(card.inputA.value, card.inputB.value));
-    } else {
-        resetHtmlContent(card);
+/* A tile shows "?" until a value exists. Non-finite results (division by zero) get the warning style. */
+const setCell = function(cell, value) {
+    cell.querySelector('.value').textContent = value === null ? '?' : value;
+    cell.classList.toggle('is-empty', value === null);
+    cell.classList.toggle('is-warning', typeof value === 'number' && !Number.isFinite(value));
+};
+
+/* Inputs are passed as typed so the echo tiles repeat them verbatim; results are the raw computed numbers. */
+const render = function(card) {
+    const inputA = card.querySelector('.input-a');
+    const inputB = card.querySelector('.input-b');
+    const hasBothValues = isValidNumber(inputA.value) && isValidNumber(inputB.value);
+    const result = hasBothValues ? calculate(inputA.value, inputB.value) : null;
+    const valueOf = key => (result === null ? null : result[key]);
+
+    card.querySelectorAll('.value-a').forEach(cell => setCell(cell, valueOf('a')));
+    card.querySelectorAll('.value-b').forEach(cell => setCell(cell, valueOf('b')));
+
+    setCell(card.querySelector('.percentage-result'), valueOf('percentage'));
+    setCell(card.querySelector('.percent-result'), valueOf('percent'));
+    setCell(card.querySelector('.delta-result'), valueOf('delta'));
+};
+
+const setupCard = function(card) {
+    const inputA = card.querySelector('.input-a');
+    const inputB = card.querySelector('.input-b');
+
+    [inputA, inputB].forEach(input => {
+        input.addEventListener('input', () => render(card));
+    });
+
+    card.querySelector('.swap-button').addEventListener('click', () => {
+        [inputA.value, inputB.value] = [inputB.value, inputA.value];
+        render(card);
+    });
+
+    render(card);
+};
+
+/* Rewrites every "card-1-*" id in a cloned card to the new index. */
+const renumberCard = function(card, index) {
+    card.id = `card-${index}`;
+
+    card.querySelectorAll('[id]').forEach(element => {
+        element.id = element.id.replace(/^card-\d+/, `card-${index}`);
+    });
+};
+
+const addCard = function() {
+    cardCount += 1;
+
+    const card = templateCard.cloneNode(true);
+    renumberCard(card, cardCount);
+    card.querySelectorAll('input').forEach(input => input.value = '');
+
+    setupCard(card);
+
+    cardsContainer.append(card);
+    card.querySelector('.input-a').focus();
+
+    if (cardCount >= MAX_CARDS) {
+        addCardButton.remove();
     }
 };
 
-Object.values(cards).forEach(card => {
-    [card.inputA, card.inputB].forEach(input => {
-        input.addEventListener('input', () => {
-            handleInputChange(card);
-        });
-    });
-
-    card.swapButton.addEventListener('click', () => {
-        [card.inputA.value, card.inputB.value] = [card.inputB.value, card.inputA.value];
-
-        handleInputChange(card);
-    });
-});
-
-const revealNextCardRow = document.querySelector('#reveal-next-card-row');
-revealNextCardRow.addEventListener('click', () => {
-    document.querySelector('.card[hidden]').removeAttribute('hidden');
-    if (!document.querySelector('.card[hidden]')) {
-        revealNextCardRow.remove();
-    }
-});
+setupCard(templateCard);
+addCardButton.addEventListener('click', addCard);
